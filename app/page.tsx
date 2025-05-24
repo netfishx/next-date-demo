@@ -20,17 +20,20 @@ export default function Home({
           <DatePickerDemo />
         </Suspense>
       </div>
-      <div className="gap-2">
-        date:{" "}
+      <div className="flexgap-2">
+        date:
         <Suspense>
-          <Date searchParams={searchParams} />
+          <DateStr searchParams={searchParams} />
         </Suspense>
+      </div>
+      <div>
+        <Link href="/form">Form</Link>
       </div>
     </div>
   );
 }
 
-async function Date({
+async function DateStr({
   searchParams,
 }: { searchParams: Promise<{ date?: string }> }) {
   const params = await searchParams;
