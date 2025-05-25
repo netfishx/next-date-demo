@@ -8,9 +8,13 @@ export const schema = z.object({
 export const formSchema = z
   .object({
     data: schema.optional(),
-    issues: z.array(z.object({
-        message: z.string(),
-        path: z.string(),
-    })).optional(),
+    issues: z
+      .array(
+        z.object({
+          message: z.string(),
+          path: z.string(),
+        }),
+      )
+      .optional(),
   })
   .optional();

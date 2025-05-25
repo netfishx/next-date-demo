@@ -27,7 +27,9 @@ export default function Home({
         </Suspense>
       </div>
       <div>
-        <Link href="/form">Form</Link>
+        <Button variant="link" size="lg" asChild>
+          <Link href="/form">表单测试</Link>
+        </Button>
       </div>
     </div>
   );
