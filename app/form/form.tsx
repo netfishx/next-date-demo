@@ -24,8 +24,8 @@ export function MyForm() {
     initialState,
   );
   const [errors, setErrors] = useState<{
-    name?: string | null;
-    age?: string | null;
+    name?: string | false;
+    age?: string | false;
   }>({});
   const debouncedSetErrors = useDebounceCallback(setErrors, 500)
   return (
@@ -42,7 +42,7 @@ export function MyForm() {
                 name: e.target.value,
               });
               if (result.success) {
-                debouncedSetErrors((prev) => ({ ...prev, name: null }));
+                debouncedSetErrors((prev) => ({ ...prev, name: false }));
               } else {
                 const errors = z.treeifyError(result.error).properties?.name?.errors;
                 debouncedSetErrors((prev) => ({ ...prev, name: errors?.join(", ") }));
@@ -51,7 +51,7 @@ export function MyForm() {
           />
         </div>
         <span className="text-destructive">
-          {errors.name !== null && (errors.name || state?.properties?.name?.errors?.join(", "))}
+          {errors.name !== false && (errors.name || state?.properties?.name?.errors?.join(", "))}
         </span>
       </div>
       <div className="flex flex-col gap-2">
@@ -63,7 +63,7 @@ export function MyForm() {
                           age: e.target.value,
                         });
                         if (result.success) {
-                          debouncedSetErrors((prev) => ({ ...prev, age: null }));
+                          debouncedSetErrors((prev) => ({ ...prev, age: false }));
                         } else {
                           const errors = z.treeifyError(result.error).properties?.age?.errors;
                           debouncedSetErrors((prev) => ({ ...prev, age: errors?.join(", ") }));
@@ -72,12 +72,12 @@ export function MyForm() {
           />
         </div>
         <span className="text-destructive">
-          {errors.age !== null && (errors.age || state?.properties?.age?.errors?.join(", "))}
+          {errors.age !== false && (errors.age || state?.properties?.age?.errors?.join(", "))}
         </span>
       </div>
       <div>
         <Button
-          disabled={isPending}
+          disabled={isPending || !!errors.name || !!errors.age}
           type="submit"
           className="flex items-center gap-2"
         >
