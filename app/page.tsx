@@ -26,9 +26,12 @@ export default function Home({
           <DateStr searchParams={searchParams} />
         </Suspense>
       </div>
-      <div>
+      <div className="flex gap-2">
         <Button variant="link" size="lg" asChild>
           <Link href="/form">表单测试</Link>
+        </Button>
+        <Button variant="link" size="lg" asChild>
+          <Link href="/table">轮询报表测试</Link>
         </Button>
       </div>
     </div>
