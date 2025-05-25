@@ -10,10 +10,10 @@ export default function Home({
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="flex items-center p-2 gap-2">
-        <Button>
+        <Button asChild>
           <Link href="/">今天</Link>
         </Button>
-        <Button>
+        <Button asChild>
           <Link href="/?date=2">明天</Link>
         </Button>
         <Suspense>
