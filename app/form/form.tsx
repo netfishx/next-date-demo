@@ -79,7 +79,7 @@ export function MyForm() {
         <Button
           disabled={isPending || !!errors.name || !!errors.age}
           type="submit"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 w-24"
         >
           {isPending ? <Loader2 className="animate-spin" /> : null}
           Submit
