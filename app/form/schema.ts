@@ -8,13 +8,18 @@ export const schema = z.object({
 export const formSchema = z
   .object({
     data: schema.optional(),
-    properties: z.object({
-        name: z.object({
-          errors: z.array(z.string()).optional(),
-        }).optional(),
-        age: z.object({
-          errors: z.array(z.string()).optional(),
-        }).optional(),
+    properties: z
+      .object({
+        name: z
+          .object({
+            errors: z.array(z.string()).optional(),
+          })
+          .optional(),
+        age: z
+          .object({
+            errors: z.array(z.string()).optional(),
+          })
+          .optional(),
       })
       .optional(),
   })

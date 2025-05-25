@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { unstable_cacheLife } from "next/cache";
 
@@ -17,15 +17,14 @@ const data = [
   { id: 9, name: "Jack Doe", age: 28 },
 ];
 
-
 export async function getData() {
-    'use cache'
+  "use cache";
 
-    unstable_cacheLife({
-        stale: 4,
-        revalidate: 4,
-        expire: 10,
-    })
+  unstable_cacheLife({
+    stale: 4,
+    revalidate: 4,
+    expire: 10,
+  });
   await sleep(500);
   const num = Math.floor(Math.random() * 10);
   const filteredData = data.filter((item) => item.id <= num);
