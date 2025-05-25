@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import Form from "next/form";
-import { useActionState } from "react";
-import type { z } from "zod/v4";
+import { useActionState, useState } from "react";
+import { z } from "zod/v4";
 import { doSomething } from "./action";
-import type { formSchema } from "./schema";
+import { schema, type formSchema } from "./schema";
+import { useDebounceCallback } from "usehooks-ts";
 
 const initialState: z.infer<typeof formSchema> = {
   data: {
@@ -22,25 +23,56 @@ export function MyForm() {
     doSomething,
     initialState,
   );
-
+  const [errors, setErrors] = useState<{
+    name?: string | null;
+    age?: string | null;
+  }>({});
+  const debouncedSetErrors = useDebounceCallback(setErrors, 500)
   return (
     <Form action={formAction} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <Label htmlFor="name">Name</Label>
-          <Input type="text" name="name" defaultValue={state?.data?.name} />
+          <Input
+            type="text"
+            name="name"
+            defaultValue={state?.data?.name}
+            onChange={(e) => {
+              const result = schema.pick({ name: true }).safeParse({
+                name: e.target.value,
+              });
+              if (result.success) {
+                debouncedSetErrors((prev) => ({ ...prev, name: null }));
+              } else {
+                const errors = z.treeifyError(result.error).properties?.name?.errors;
+                debouncedSetErrors((prev) => ({ ...prev, name: errors?.join(", ") }));
+              }
+            }}
+          />
         </div>
         <span className="text-destructive">
-          {state?.issues?.find((issue) => issue.path === "name")?.message}
+          {errors.name !== null && (errors.name || state?.properties?.name?.errors?.join(", "))}
         </span>
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <Label htmlFor="age">Age</Label>
-          <Input type="number" name="age" defaultValue={state?.data?.age} />
+          <Input type="number" name="age" defaultValue={state?.data?.age} 
+                      onChange={(e) => {
+                        const result = schema.pick({ age: true }).safeParse({
+                          age: e.target.value,
+                        });
+                        if (result.success) {
+                          debouncedSetErrors((prev) => ({ ...prev, age: null }));
+                        } else {
+                          const errors = z.treeifyError(result.error).properties?.age?.errors;
+                          debouncedSetErrors((prev) => ({ ...prev, age: errors?.join(", ") }));
+                        }
+                      }}
+          />
         </div>
         <span className="text-destructive">
-          {state?.issues?.find((issue) => issue.path === "age")?.message}
+          {errors.age !== null && (errors.age || state?.properties?.age?.errors?.join(", "))}
         </span>
       </div>
       <div>

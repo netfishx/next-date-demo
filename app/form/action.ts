@@ -12,20 +12,17 @@ export async function doSomething(
   await sleep(1000);
   const data = Object.fromEntries(formData);
   try {
-    const validatedData = schema.parse(data);
+    const validatedData = schema.safeParse(data);
+    if (!validatedData.success) {
+      return {
+        data: data as unknown as z.infer<typeof schema>,
+        properties: z.treeifyError(validatedData.error).properties,
+      };
+    }
     return {
-      data: validatedData,
+      data: validatedData.data,
     };
   } catch (e) {
     console.error(e);
-    if (e instanceof z.ZodError) {
-      return {
-        data: data as unknown as z.infer<typeof schema>,
-        issues: e.issues.map((issue) => ({
-          message: issue.message,
-          path: issue.path.join("."),
-        })),
-      };
-    }
   }
 }
