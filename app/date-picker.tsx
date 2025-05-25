@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import { parseAsString, useQueryState } from "nuqs";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -60,7 +59,7 @@ export function DatePickerDemo() {
           mode="single"
           selected={day}
           onSelect={handleDateChange}
-          initialFocus
+          autoFocus
         />
       </PopoverContent>
     </Popover>
